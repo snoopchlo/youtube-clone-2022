@@ -1,0 +1,28 @@
+{
+  "name": "youtube-clone-2022",
+  "version": "1.0.0",
+  "description": "The best way to watch videos ",
+  "scripts": {
+    "dev": "nodemon --exec babel-node src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/snoopchlo/youtube-clone-2022.git"
+  },
+  "author": "Chloe Lee",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/snoopchlo/youtube-clone-2022/issues"
+  },
+  "homepage": "https://github.com/snoopchlo/youtube-clone-2022#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.18.10",
+    "@babel/node": "^7.18.10",
+    "@babel/preset-env": "^7.18.10",
+    "nodemon": "^2.0.19"
+  }
+}
