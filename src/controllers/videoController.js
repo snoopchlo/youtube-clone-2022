@@ -1,3 +1,8 @@
+const fakeUser = {
+  username: "Chloe",
+  loggedIn: false,
+};
+
 export const watchVideo = (req, res) =>
   res.render("watch", { pageTitle: "Watch" });
 
@@ -14,4 +19,5 @@ export const deleteVideo = (req, res) => {
 //   res.send("delete commentt on Videos");
 
 export const search = (req, res) => res.send("Search Video");
-export const trending = (req, res) => res.render("home", { pageTitle: "Home" });
+export const trending = (req, res) =>
+  res.render("home", { pageTitle: "Home", fakeUser });
