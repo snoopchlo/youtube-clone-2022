@@ -1,10 +1,11 @@
 const fakeUser = {
   username: "Chloe",
-  loggedIn: false,
+  loggedIn: true,
 };
-
-export const watchVideo = (req, res) =>
-  res.render("watch", { pageTitle: "Watch" });
+export const watchVideo = (req, res) => {
+  const videoID = req.params.id;
+  return res.render("watch", { pageTitle: "Watch", videoID });
+};
 
 export const uploadVideo = (req, res) => res.send("Upload videos!");
 export const editVideo = (req, res) =>
@@ -20,32 +21,31 @@ export const deleteVideo = (req, res) => {
 
 export const search = (req, res) => res.send("Search Video");
 export const trending = (req, res) => {
-  const fakeVideos = [
+  let fakeVideos = [
     {
       title: "video 1",
-      rating: 4,
-      comments: 2,
-      createdAt: "2 minutes ago",
-      views: 59,
+      rating: 3,
+      comments: 25,
+      createdAt: "3 minutes ago",
+      views: 159,
       id: 1,
     },
     {
       title: "video 2",
-      rating: 4,
-      comments: 2,
-      createdAt: "2 minutes ago",
-      views: 59,
-      id: 1,
+      rating: 5,
+      comments: 21,
+      createdAt: "22 minutes ago",
+      views: 539,
+      id: 2,
     },
     {
       title: "video 3",
       rating: 4,
-      comments: 2,
-      createdAt: "2 minutes ago",
+      comments: 244,
+      createdAt: "52 minutes ago",
       views: 59,
-      id: 1,
+      id: 3,
     },
   ];
-
   return res.render("home", { pageTitle: "Home", fakeUser, fakeVideos });
 };
