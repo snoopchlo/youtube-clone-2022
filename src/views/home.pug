@@ -2,8 +2,7 @@ extends base.pug
 include mixins/video.pug
 
 block content 
-    h1 Watch Videos
-    each video in fakeVideos 
+    each video in videos
         +video(video)
     else 
         li sorry nothing found

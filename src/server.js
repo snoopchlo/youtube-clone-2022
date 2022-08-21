@@ -1,5 +1,5 @@
-import "./db.js";
-import "./models/Video";
+// for server only
+
 import express from "express";
 import morgan from "morgan";
 
@@ -8,7 +8,7 @@ import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
 
 const app = express();
-const PORT = 4000;
+
 const logger = morgan("dev");
 app.use(logger);
 app.use(express.urlencoded({ extended: true }));
@@ -18,7 +18,6 @@ app.use("/", globalRouter);
 app.use("/user", userRouter);
 app.use("/videos", videoRouter);
 
-app.listen(PORT, () =>
-  console.log(`✅ Server Listening on port http://localhost:${PORT} 🚀`)
-);
 console.log(process.cwd());
+
+export default app;

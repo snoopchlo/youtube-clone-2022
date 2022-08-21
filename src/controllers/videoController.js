@@ -1,54 +1,34 @@
-const fakeUser = {
-  username: "Chloe",
-  loggedIn: true,
+import Video from "../models/Video";
+/*
+export const home = (req, res) => {
+  console.log("start");
+  Video.find({}, (error, videos) => {});
+  console.log("Hello"); // Printed frist before than error and videos
+  // logger printed after the hello = after request is finished
+  return res.render("home", { pageTitle: "Home", videos });
 };
+*/
 
-let fakeVideos = [
-  {
-    title: "video 1",
-    rating: 3,
-    comments: 25,
-    createdAt: "3 minutes ago",
-    views: 159,
-    id: 1,
-  },
-  {
-    title: "video 2",
-    rating: 5,
-    comments: 21,
-    createdAt: "22 minutes ago",
-    views: 539,
-    id: 2,
-  },
-  {
-    title: "video 3",
-    rating: 4,
-    comments: 244,
-    createdAt: "52 minutes ago",
-    views: 1,
-    id: 3,
-  },
-];
+export const home = async (req, res) => {
+  const videos = await Video.find({});
+  Video.find({}, (error, videos) => {});
+  return res.render("home", { pageTitle: "Home", videos });
+};
 
 export const watchVideo = (req, res) => {
   const { id } = req.params;
-  const chosenVideo = fakeVideos[id - 1];
   return res.render("watch", {
-    pageTitle: `Watch ${chosenVideo.title}`,
-    chosenVideo,
+    pageTitle: "Watch",
   });
 };
 
 export const getEdit = (req, res) => {
   const { id } = req.params;
-  const chosenVideo = fakeVideos[id - 1];
-  return res.render("edit", { pageTitle: "Edit", chosenVideo });
+  return res.render("edit", { pageTitle: "Edit" });
 };
 export const postEdit = (req, res) => {
   const { id } = req.params;
   const { title } = req.body;
-  const chosenVideo = fakeVideos[id - 1];
-  chosenVideo.title = title;
   return res.redirect(`/videos/${id}`);
 };
 export const deleteVideo = (req, res) => {
@@ -61,9 +41,6 @@ export const deleteVideo = (req, res) => {
 //   res.send("delete commentt on Videos");
 
 export const search = (req, res) => res.send("Search Video");
-export const trending = (req, res) => {
-  return res.render("home", { pageTitle: "Home", fakeUser, fakeVideos });
-};
 
 export const getUpload = (req, res) => {
   return res.render("upload", { pageTitle: "Upload Video" });
@@ -71,14 +48,5 @@ export const getUpload = (req, res) => {
 
 export const postUpload = (req, res) => {
   const { title } = req.body;
-  const newVideo = {
-    title,
-    rating: 0,
-    comments: 0,
-    createdAt: "just now",
-    views: 0,
-    id: fakeVideos.length + 1,
-  };
-  fakeVideos.push(newVideo);
   return res.redirect("/");
 };
