@@ -12,7 +12,7 @@ export const home = (req, res) => {
 export const home = async (req, res) => {
   const videos = await Video.find({});
   Video.find({}, (error, videos) => {});
-  console.log(videos);
+  // console.log(videos);
   return res.render("home", { pageTitle: "Home", videos });
 };
 

@@ -3,15 +3,15 @@
 // [3] export User model
 
 import mongoose from "mongoose";
-const { Schema } = mongoose;
+// const { Schema } = mongoose;
 
 // Everything in Mongoose starts with a schema (maps to a MongoDB and define the shape of the document)
-const userSchema = new Schema({
+const userSchema = new mongoose.Schema({
+  name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   username: { type: String, required: true, unique: true },
   passowrd: { type: String, required: true },
-  name: { type: String, required: true },
-  location: String,
+  location: { type: String, required: true },
 });
 
 // To use our schema definition, need to convert the schema into a model
