@@ -4,7 +4,7 @@ html(lang="en")
         title #{pageTitle} | Youtube
         link(rel="stylesheet" href="https://unpkg.com/mvp.css")
         
-    body 
+    body
         header
             ul 
                 li 
@@ -13,6 +13,9 @@ html(lang="en")
                     a(href="/") Home
                 li 
                     a(href="/search") Search    
-        main     
+                li 
+                    a(href="/join") Join
+        main
+            h1=pageTitle      
             block content
         include partials/footer.pug

@@ -1,6 +1,7 @@
 // initialise everything -> starts the application
 import "./db.js";
 import "./models/Video";
+import "./models/User";
 import app from "./server";
 const PORT = 4000;
 
