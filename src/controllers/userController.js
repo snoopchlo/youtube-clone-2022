@@ -1,4 +1,5 @@
 import User from "../models/User";
+import bcrypt from "bcrypt";
 
 export const getJoin = (req, res) => {
   return res.render("join", {
@@ -10,17 +11,36 @@ export const getJoin = (req, res) => {
 //   console.log(typeof req.body.password);
 // };
 export const postJoin = async (req, res) => {
-  //console.log(req.body); // we were able to print it on conosle. but how to save it to database? -> Model.create()
-  const { name, email, username, password, location } = req.body;
-  await User.create({
-    name,
-    email,
-    username,
-    password,
-    location,
-  });
-
-  return res.redirect("/login");
+  const { name, username, email, password, password2, location } = req.body;
+  const pageTitle = "Join";
+  if (password !== password2) {
+    return res.status(400).render("join", {
+      pageTitle,
+      errorMessage: "Password confirmation does not match.",
+    });
+  }
+  const exists = await User.exists({ $or: [{ username }, { email }] });
+  if (exists) {
+    return res.status(400).render("join", {
+      pageTitle,
+      errorMessage: "This username/email is already taken.",
+    });
+  }
+  try {
+    await User.create({
+      name,
+      username,
+      email,
+      password,
+      location,
+    });
+    return res.redirect("/login");
+  } catch (error) {
+    return res.status(400).render("join", {
+      pageTitle: "Upload Video",
+      errorMessage: error._message,
+    });
+  }
 };
 
 export const editUser = (req, res) => res.send("Edit User");
@@ -28,4 +48,27 @@ export const deleteUser = (req, res) => res.send("Delete User");
 export const userProfile = (req, res) => res.send("See user profile");
 export const logout = (req, res) => res.send("logout User");
 
-export const login = (req, res) => res.send("Login");
+export const getLogin = (req, res) =>
+  res.render("login", { pageTitle: "Login" });
+
+export const postLogin = async (req, res) => {
+  const { username, password } = req.body;
+  const pageTitle = "Login";
+  const user = await User.findOne({ username });
+  if (!user) {
+    return res.status(400).render("login", {
+      pageTitle,
+      errorMessage: "An account with this username does not exists",
+    });
+  }
+  const ok = await bcrypt.compare(password, user.password);
+  if (!ok) {
+    return res.status(400).render("login", {
+      pageTitle,
+      errorMessage: "Wrong password",
+    });
+  }
+  req.session.loggedIn = true; //different for every browser
+  req.session.user = user;
+  return res.redirect("/");
+};

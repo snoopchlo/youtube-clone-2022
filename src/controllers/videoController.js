@@ -3,7 +3,7 @@ import Video from "../models/Video";
 export const home = (req, res) => {
   console.log("start");
   Video.find({}, (error, videos) => {});
-  console.log("Hello"); // Printed frist before than error and videos
+  console.log("Hello"); // Printed first before than error and videos
   // logger printed after the hello = after request is finished
   return res.render("home", { pageTitle: "Home", videos });
 };
@@ -60,7 +60,7 @@ export const deleteVideo = async (req, res) => {
 
 // export const commentVideo = (req, res) => res.send("comment on Videos");
 // export const deleteComment = (req, res) =>
-//   res.send("delete commentt on Videos");
+//   res.send("delete comment on Videos");
 
 export const search = async (req, res) => {
   const { keyword } = req.query;
@@ -90,8 +90,7 @@ export const postUpload = async (req, res) => {
 
     return res.redirect("/");
   } catch (error) {
-    console.log(error);
-    return res.render("upload", {
+    return res.status(400).render("upload", {
       pageTitle: "Upload Video",
       errorMessage: error._message,
     });
