@@ -16,9 +16,7 @@ const userSchema = new Schema({
 });
 
 userSchema.pre("save", async function () {
-  console.log("password before hashing: ", this.password);
   this.password = await bcrypt.hash(this.password, 5);
-  console.log("password after hashing: ", this.password);
 });
 
 // To use our schema definition, need to convert the schema into a model
