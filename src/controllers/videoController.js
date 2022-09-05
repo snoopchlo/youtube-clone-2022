@@ -38,7 +38,7 @@ export const getEdit = async (req, res) => {
   return res.render("edit", { pageTitle: `Edit ${video.title}`, video });
 };
 export const postEdit = async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   const { id } = req.params;
   const { title, description, hashtags } = req.body;
   const video = await Video.exists({ _id: id });
