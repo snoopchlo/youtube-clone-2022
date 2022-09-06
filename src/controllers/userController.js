@@ -1,6 +1,7 @@
 import User from "../models/User";
-import fetch from "node-fetch";
 import bcrypt from "bcrypt";
+// import { json } from "express";
+import fetch from "node-fetch";
 
 export const getJoin = (req, res) => {
   return res.render("join", {
@@ -8,6 +9,9 @@ export const getJoin = (req, res) => {
   });
 };
 
+// export const postJoin = (req, res) => {
+//   console.log(typeof req.body.password);
+// };
 export const postJoin = async (req, res) => {
   const { name, username, email, password, password2, location } = req.body;
   const pageTitle = "Join";
@@ -72,17 +76,16 @@ export const postLogin = async (req, res) => {
 };
 
 export const startGithubLogin = (req, res) => {
+  const baseUrl = "https://github.com/login/oauth/authorize";
   const config = {
     client_id: process.env.GH_CLIENT,
     allow_signup: false,
     scope: "read:user user:email", // first read user, then user email
   };
   const params = new URLSearchParams(config).toString();
-  const baseUrl = "https://github.com/login/oauth/authorize";
   const finalUrl = `${baseUrl}?${params}`;
   return res.redirect(finalUrl);
 };
-
 export const finishGithubLogin = async (req, res) => {
   const baseUrl = "https://github.com/login/oauth/access_token";
   const config = {
@@ -103,7 +106,7 @@ export const finishGithubLogin = async (req, res) => {
       },
     })
   ).json();
-  // res.send(JSON.stringify(json));
+  res.send(JSON.stringify(json));
   // exchange the code with the access token
   if ("access_token" in tokenRequest) {
     const { access_token } = tokenRequest;
@@ -115,8 +118,7 @@ export const finishGithubLogin = async (req, res) => {
         },
       })
     ).json();
-    // console.log(userData);
-    // read user email
+    console.log(userData);
     const emailData = await (
       await fetch(`${apiUrl}/user/emails`, {
         headers: {
@@ -124,17 +126,17 @@ export const finishGithubLogin = async (req, res) => {
         },
       })
     ).json();
-    console.log("this is emailObj", emailObj);
+    console.log("emailData is: ", emailData);
     const emailObj = emailData.find(
       (email) => email.primary === true && email.verified === true
     );
-    console.log("This is emailObj", emailObj);
+    console.log("emailObj is", emailObj);
     if (!emailObj) {
       return res.redirect("/login");
     }
     const existingUser = await User.findOne({ email: emailObj.email });
     if (existingUser) {
-      req.session.loggedIn = true;
+      req.session.loggedIn = true; //different for every browser
       req.session.user = existingUser;
       return res.redirect("/");
     } else {
@@ -142,7 +144,7 @@ export const finishGithubLogin = async (req, res) => {
         name: userData.name,
         username: userData.login,
         email: emailObj.email,
-        password: "",
+        password: " ",
         socialOnly: true,
         location: userData.location,
       });

@@ -6,9 +6,11 @@ html(lang="en")
         
     body
         header
-            ul 
-                li
-                    a(href="/") Home
+            h1=pageTitle 
+            nav
+                ul 
+                    li
+                        a(href="/") Home
                     if loggedIn
                         li
                             a(href="/logout")  Log Out
@@ -23,7 +25,6 @@ html(lang="en")
                         a(href="/search") Search
                     li
                         a(href="/videos/upload") Upload Video
-        main
-            h1=pageTitle      
+        main     
             block content
         include partials/footer.pug
